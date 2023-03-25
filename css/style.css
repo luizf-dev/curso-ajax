@@ -2,7 +2,7 @@
 .container-principal{
     height: 95vh;
     margin-top: 100px;
-    
+    border: 2px solid green;
 }
 
 .img{
@@ -15,8 +15,19 @@
     width: 100%;
 }
 
+.container-principal .div-filmes{
+    width: 50%;
+    margin: 0 auto;
+    border: 1px solid #000;
+    padding: 20px;
+}
 
-/*Barra de Navegação
+hr{
+    border: 2px solid #017143;
+}
+
+
+/* *Barra de Navegação
 --------------------------------*/
 nav.navbar-transparent{
     background: rgba(0,0,0);    
@@ -37,6 +48,9 @@ nav.navbar-transparent{
 }
 
 
+
+/* * Rodapé 
+----------------- */
 .footer{
     background-color: #24262b;
     padding: 70px 0;
