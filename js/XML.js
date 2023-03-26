@@ -55,27 +55,74 @@ function getFilmes(){
 
             let xmlFilmes = xmlHttp.responseText;
             
+            //* Aqui começa a conversão de xml para Json
+            //* O DOMParser transforma uma string contendo marcaçoes html ou xml em um 
+            //* objeto que pode ser manipulado pelo javascript
             let parser = new DOMParser();
 
-            xmlFilmesParse = parser.parseFromString(xmlFilmes, 'text/xml');
-           
-
+            //* O ParseFromString é um método do objeto DOMParser que analisauma sequencia de caracteres
+            //* e cria um documento DOM.
+            xmlFilmesParse = parser.parseFromString(xmlFilmes, 'text/xml'); 
 
             jsonFilmes = xmlToJson(xmlFilmesParse);
 
-            
+            //* Faz um laço de repetição nas informações contidas nos registros dos filmes
+            for(let i in jsonFilmes['filmes']['filme']){
+                let item = jsonFilmes['filmes']['filme'][i];
+
+                //* Criando os htmls de forma dinâmica de acordo com o conteudo
+                let divRow = document.createElement('div');
+                divRow.className = 'row';
+
+                let divFilmes = document.createElement('div');
+                divFilmes.className = 'col-sm-12 col-md-8 divFilmes';
+
+                let p1 = document.createElement('p');
+                p1.innerHTML = '<strong>Título:</strong> ' + item['titulo']['#text'];
+
+                let p2 = document.createElement('p');
+                p2.innerHTML = '<strong>Resumo:</strong> ' + item['resumo']['#text'];
+
+                let genero = '';
+                for(let g in item.genero){
+                    if(genero){
+                        genero += ', ';
+                    }
+                    genero += item.genero[g]['#text'];
+                }
+
+                let p3 = document.createElement('p');
+                p3.innerHTML = '<strong>Gênero:</strong> ' + genero ;
+
+                let elenco = '';
+                for(let e in item.elenco.ator){
+                    if(elenco){
+                        elenco += ', ';
+                    }
+                    elenco += item.elenco.ator[e]['#text'];
+                }
+
+                let p4 = document.createElement('p');
+                p4.innerHTML = '<strong>Elenco:</strong> ' + elenco;
+
+                let p5 = document.createElement('p');
+                p5.innerHTML = '<strong>Data de lançamento:</strong> ' + item.dataLancamento['#text'] + 
+                ' ('+ item.dataLancamento['@attributes']['pais'] +')';
+                
+                let hr = document.createElement('hr');
+
+                divRow.appendChild(divFilmes);
+                divFilmes.appendChild(p1);
+                divFilmes.appendChild(p2);
+                divFilmes.appendChild(p3);
+                divFilmes.appendChild(p4);
+                divFilmes.appendChild(p5);
+                divFilmes.appendChild(hr);
+
+                document.getElementById('lista').appendChild(divRow);
 
             
-
-
-            /*<div class="col-sm-12 col-md-8 div-filmes">
-                <p><strong>Título:</strong> Titulo do filme</p>
-                <p><strong>Resumo:</strong> Resumo do filme</p>
-                <p><strong>Gênero:</strong> Gênero do filme</p>
-                <p><strong>Elenco:</strong> Elenco do filme</p>
-                <p><strong>Data de lançamento:</strong> Data de lançamento do filme</p>
-                <hr>
-            </div>*/
+            }
         }
 
         if(xmlHttp.readyState == 4 && xmlHttp.status == 404){

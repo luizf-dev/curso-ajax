@@ -1,8 +1,9 @@
 
 .container-principal{
-    height: 95vh;
+    min-height: 100vh;
     margin-top: 100px;
-    border: 2px solid green;
+    width: 100%;
+    margin: 70px auto;
 }
 
 .img{
@@ -15,9 +16,9 @@
     width: 100%;
 }
 
-.container-principal .div-filmes{
+.container-principal .divFilmes{
     width: 50%;
-    margin: 0 auto;
+    margin: 10px auto;
     border: 1px solid #000;
     padding: 20px;
 }
@@ -146,7 +147,16 @@ nav.navbar-transparent{
 }
 
 @media(max-width:574px){
+
+    .container-principal .divFilmes{
+        width: 100%;
+        margin: 10px 10px;
+    }
+
     .footer-col{
         width: 100%; 
     }
+
+    
 }
+
