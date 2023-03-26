@@ -40,35 +40,28 @@ function xmlToJson(xml) {
 
 
 //* Função que receberá o catalogo de filmes 
-function getFilmes(){
+function getFilmesJson(){
 
     //* Instanciando o método httpRequest do browser
     let xmlHttp = new XMLHttpRequest();
 
     //* Chama o método OPEN e passa o verbo que será utilizado, e a URL que será requisitada
-    xmlHttp.open('GET', 'http://localhost/Curso-Ajax/files/filmes.xml');
+    xmlHttp.open('GET', 'http://localhost/Curso-Ajax/files/filmes.json');
 
     //* Faz o controle e verifica os estado e o Status da requisição
     xmlHttp.onreadystatechange = () => {
 
         if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
 
-            let xmlFilmes = xmlHttp.responseText;
-            
-            //* Aqui começa a conversão de xml para Json
-            //* O DOMParser transforma uma string contendo marcaçoes html ou xml em um 
-            //* objeto que pode ser manipulado pelo javascript
-            let parser = new DOMParser();
+            let jsonFilmes = xmlHttp.responseText;
+            let objJSONfilmes=  JSON.parse(jsonFilmes);
 
-            //* O ParseFromString é um método do objeto DOMParser que analisauma sequencia de caracteres
-            //* e cria um documento DOM.
-            xmlFilmesParse = parser.parseFromString(xmlFilmes, 'text/xml'); 
-
-            jsonFilmes = xmlToJson(xmlFilmesParse);
+            console.log(objJSONfilmes);
 
             //* Faz um laço de repetição nas informações contidas nos registros dos filmes
-            for(let i in jsonFilmes['filmes']['filme']){
-                let item = jsonFilmes['filmes']['filme'][i];
+            for(let i in objJSONfilmes.filmes){
+                let item = objJSONfilmes.filmes[i];
+                console.log(item);
 
                 //* Criando os htmls de forma dinâmica de acordo com o conteudo
                 let divRow = document.createElement('div');
@@ -78,36 +71,36 @@ function getFilmes(){
                 divFilmes.className = 'col-sm-12 col-md-8 divFilmes';
 
                 let p1 = document.createElement('p');
-                p1.innerHTML = '<strong>Título:</strong> ' + item['titulo']['#text'];
+                p1.innerHTML = '<strong>Título:</strong> ' + item.titulo;
 
                 let p2 = document.createElement('p');
-                p2.innerHTML = '<strong>Resumo:</strong> ' + item['resumo']['#text'];
+                p2.innerHTML = '<strong>Resumo:</strong> ' + item.resumo;
 
                 let genero = '';
-                for(let g in item.genero){
+                for(let g in item.generos){
                     if(genero){
                         genero += ', ';
                     }
-                    genero += item.genero[g]['#text'];
+                    genero += item.generos[g].genero;
                 }
 
                 let p3 = document.createElement('p');
                 p3.innerHTML = '<strong>Gênero:</strong> ' + genero ;
 
                 let elenco = '';
-                for(let e in item.elenco.ator){
+                for(let e in item.elenco){
                     if(elenco){
                         elenco += ', ';
                     }
-                    elenco += item.elenco.ator[e]['#text'];
+                    elenco += item.elenco[e].ator;
                 }
 
                 let p4 = document.createElement('p');
                 p4.innerHTML = '<strong>Elenco:</strong> ' + elenco;
 
                 let p5 = document.createElement('p');
-                p5.innerHTML = '<strong>Data de lançamento:</strong> ' + item.dataLancamento['#text'] + 
-                ' ('+ item.dataLancamento['@attributes']['pais'] +')';
+                p5.innerHTML = '<strong>Data de lançamento:</strong> ' + item.dataLancamento.data + 
+                ' ('+ item.dataLancamento.pais +')';
                 
                 let hr = document.createElement('hr');
 
@@ -120,10 +113,10 @@ function getFilmes(){
                 divFilmes.appendChild(hr);
 
                 document.getElementById('lista').appendChild(divRow);
-
             
             }
-        }
+            
+        }  
 
         if(xmlHttp.readyState == 4 && xmlHttp.status == 404){
 
